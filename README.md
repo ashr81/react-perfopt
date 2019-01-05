@@ -1,0 +1,1 @@
+### App to demonstration performance optimzations in react.js
