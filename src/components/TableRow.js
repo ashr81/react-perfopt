@@ -1,17 +1,17 @@
 import React from 'react';
 
 const TableRow = ({
-    ID, 
-    IDBook,
-    FirstName,
-    LastName
+    id, 
+    albumId,
+    title,
+    url
 }) => {
     return(
         <tr>
-            <td>{ID}</td>
-            <td>{IDBook}</td>
-            <td>{FirstName}</td>
-            <td>{LastName}</td>
+            <td>{id}</td>
+            <td>{albumId}</td>
+            <td>{title}</td>
+            <td>{url}</td>
         </tr>
     )
 }

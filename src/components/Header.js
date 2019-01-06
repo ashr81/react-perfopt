@@ -5,8 +5,9 @@ const Header = ({
     actionAt,
     onInputChange,
     multiAction,
-    updateRandom,
-    deleteRandom
+    updateRows,
+    deleteRows,
+    addRows
 }) => {
     console.log("Rendered!")
     return (
@@ -21,8 +22,9 @@ const Header = ({
                 <input type="checkbox" id="checkbox" checked={multiAction} onChange={onInputChange}></input>
             </div>
             <div className="display-block margin-top-bottom">
-                <button className="button-action-item" onClick={updateRandom}>Update Entry</button>
-                <button className="button-action-item" onClick={deleteRandom}>Delete Entry</button>
+                <button className="button-action-item" onClick={addRows}>Add Entry</button>
+                <button className="button-action-item" onClick={updateRows}>Update Entry</button>
+                <button className="button-action-item" onClick={deleteRows}>Delete Entry</button>
             </div>
         </div>
     )

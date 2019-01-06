@@ -13,8 +13,8 @@ class Index extends React.Component {
         }
         this.fetchData =  this.fetchData.bind(this)
         this.updateDataState = this.updateDataState.bind(this)
-        this.deleteRandom = this.deleteRandom.bind(this)
-        this.updateRandom = this.updateRandom.bind(this)
+        this.deleteRows = this.deleteRows.bind(this)
+        this.updateRows = this.updateRows.bind(this)
         this.onInputChange = this.onInputChange.bind(this)
     }
 
@@ -22,11 +22,12 @@ class Index extends React.Component {
         this.setState({
             isLoading: true
         })
-        fetch("https://fakerestapi.azurewebsites.net/api/Authors")
+        fetch("https://jsonplaceholder.typicode.com/photos")
         .then((response) => response.json())
         .then((response) => {
             this.setState({
-                data: response
+                data: response,
+                isLoading: false
             })
         })
         .catch((error) => {
@@ -41,22 +42,37 @@ class Index extends React.Component {
         this.setState({ data })
     }
 
-    deleteRandom = () => {
+    addRows = () => {
+        const { data, multiAction, actionAt } = this.state;
+        this.setState({
+            data: data.flatMap((d, i) => {
+                if(multiAction && i % actionAt === 0) {
+                    return [{...d}, {...d, id: d.id + 20000}];
+                } else {
+                    if(i === actionAt)
+                        return [{...d}, {...d, id: d.id + 20000}];
+                    return d;
+                }
+            })
+        })
+    }
+
+    deleteRows = () => {
         const { data, multiAction, actionAt } = this.state;
         this.setState({
             data: data.filter((_d, i) => (multiAction && i%actionAt === 0) || (!multiAction && i !== actionAt))
         })
     }
     
-    updateRandom = () => {
+    updateRows = () => {
         const { data, multiAction, actionAt } = this.state;
         this.setState({
             data: data.map((d, i) => {
                 if(multiAction && i % actionAt === 0) {
-                    d.FirstName = 'Editted Entry'
+                    d.title = 'Editted Entry'
                     return d;
                 } else {
-                    if(i === actionAt) d.FirstName = 'Editted Entry';
+                    if(i === actionAt) d.title = 'Editted Entry';
                     return d;
                 }
             })
@@ -77,7 +93,7 @@ class Index extends React.Component {
     }
 
     render() {
-        const { data, actionAt, multiAction } = this.state;
+        const { data, actionAt, multiAction, isLoading } = this.state;
         return(
             <Fragment>
                 <Header
@@ -85,23 +101,28 @@ class Index extends React.Component {
                     actionAt={actionAt}
                     onInputChange={this.onInputChange}
                     multiAction={multiAction}
-                    updateRandom={this.updateRandom}
-                    deleteRandom={this.deleteRandom}
+                    updateRows={this.updateRows}
+                    deleteRows={this.deleteRows}
+                    addRows={this.addRows}
                 />
-                <table>
-                    <caption>Statement Summary</caption>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Salary</th>
-                            <th>Age</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.render(data)}
-                    </tbody>
-                </table>
+                {isLoading ? 
+                    <div>Please waiting..,</div>
+                    : 
+                    <table>
+                        <caption>Statement Summary</caption>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>Album Id</th>
+                                <th>Title</th>
+                                <th>Thumbnail Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.props.render(data)}
+                        </tbody>
+                    </table>
+                }
             </Fragment>
         )
     }

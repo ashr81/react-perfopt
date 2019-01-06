@@ -9,7 +9,7 @@ class UsingId extends React.Component {
             <Fragment>
                 <div className="page-header">List View using Id as Key</div>
                 <Index render={data => (
-                    data.map((d) => (<TableRow key={d.ID} {...d}/>))
+                    data.map((d) => (<TableRow key={d.id} {...d}/>))
                 )}/>
             </Fragment>
         )
